@@ -18,7 +18,6 @@ public interface FoursquareApi {
     @GET("{id}")
     fun getVenueDetails(@Path("id") id : String = "50389c0fe4b04a184c86b7e8",
                         @Query("client_id") client_id : String = RetrofitClient.ClientId,
-                        @Query("client_secret") client_secret : String = RetrofitClient.ClientSecret
-                        //@Query("v") v : String = "20200624"
-    ) : Call<DetailsResponse>
+                        @Query("client_secret") client_secret : String = RetrofitClient.ClientSecret,
+                        @Query("v") v : String = "20200624") : Call<DetailsResponse>
 }
