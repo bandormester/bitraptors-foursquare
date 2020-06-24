@@ -2,4 +2,6 @@
     <string name="app_name">Foursquare</string>
     <string name="title_activity_maps">Map</string>
     <string name="to_map">To Map</string>
+    <string name="switch_to_map">Switch to Map</string>
+    <string name="switch_to_list">Switch to List</string>
 </resources>
