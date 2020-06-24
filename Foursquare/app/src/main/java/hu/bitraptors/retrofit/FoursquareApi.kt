@@ -1,7 +1,8 @@
 package hu.bitraptors.retrofit
 
-import hu.bitraptors.model.response.DetailsResponse
-import hu.bitraptors.model.response.SearchResponse
+
+import hu.bitraptors.model.details.DetailsResponse
+import hu.bitraptors.model.search.SearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import hu.bitraptors.R
-import hu.bitraptors.model.response.DetailsResponse
-import hu.bitraptors.model.response.SearchResponse
+import hu.bitraptors.model.details.DetailsResponse
+import hu.bitraptors.model.search.SearchResponse
 import hu.bitraptors.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
                 Log.d("retrofit", response.code().toString())
                 if(response.isSuccessful){
-                    Log.d("retrofit", response.body()!!.response.venues[0].location.lat.toString())
+                    Log.d("retrofit", response.body()!!.response!!.venues?.get(0)?.name!!)
                 }
             }
         })
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<DetailsResponse>, response: Response<DetailsResponse>) {
                 Log.d("retrofit", response.code().toString())
                 if(response.isSuccessful){
-                    Log.d("retrofit", response.body()!!.response.venue.location.lat.toString())
+                    Log.d("retrofit", response.body()!!.response?.venue?.name!!)
                 }
             }
         })
