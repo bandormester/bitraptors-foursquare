@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import hu.bitraptors.R
 import hu.bitraptors.model.search.Venue
@@ -24,6 +26,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private var mMap: GoogleMap? = null
     private lateinit var mainActivity: MainActivity
+    private lateinit var lastMarker : Marker
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +60,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         addVenueMarkers((activity as MainActivity).nearVenues)
 
-        mMap!!.setOnInfoWindowClickListener { marker -> Log.d("map", marker.tag.toString()) }
+        mMap!!.setOnInfoWindowClickListener {
+            marker -> Toast.makeText(mainActivity, marker.tag.toString(), Toast.LENGTH_SHORT).show()
+            lastMarker = marker
+        }
 
         mMap!!.setOnMarkerClickListener {
             hideButton()
@@ -78,37 +84,43 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun hideButton(){
-        if(btSwitchList.visibility == View.VISIBLE){
-            val fade = AlphaAnimation(1.0f, 0.0f)
+        if(btSwitchList.isFocusable){
+            val fade = AlphaAnimation(1.0f, 0.5f)
             fade.duration = 500
 
-            val slide = TranslateAnimation(0.0f,-300.0f,0.0f,0.0f)
-            slide.duration = 500
+            val slide = TranslateAnimation(0.0f,-220.0f,0.0f,0.0f)
+            slide.duration = 250
 
             val set = AnimationSet(false)
             set.addAnimation(fade)
             set.addAnimation(slide)
+            set.fillAfter = true
+
+            btSwitchList.isFocusable = false
+            btSwitchList.isClickable = false
 
             btSwitchList.startAnimation(set)
-            btSwitchList.visibility = View.GONE
         }
 
     }
 
     private fun showButton(){
-        if(btSwitchList.visibility == View.GONE){
-            val fade = AlphaAnimation(0.0f, 1.0f)
+        if(!btSwitchList.isFocusable){
+            val fade = AlphaAnimation(0.5f, 1.0f)
             fade.duration = 500
 
-            val slide = TranslateAnimation(-300.0f,0.0f,0.0f,0.0f)
-            slide.duration = 500
+            val slide = TranslateAnimation(-220.0f,0.0f,0.0f,0.0f)
+            slide.duration = 250
 
             val set = AnimationSet(false)
             set.addAnimation(fade)
             set.addAnimation(slide)
+            set.fillAfter = true
+
+            btSwitchList.isFocusable = true
+            btSwitchList.isClickable = true
 
             btSwitchList.startAnimation(set)
-            btSwitchList.visibility = View.VISIBLE
         }
 
     }

@@ -42,14 +42,14 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-        RetrofitClient.venueService.getVenueDetails().enqueue(object : RetrofitClient.VenueCallback<DetailsResponse> {
-            override fun onResponse(call: Call<DetailsResponse>, response: Response<DetailsResponse>) {
-                Log.d("retrofit", response.code().toString())
-                if(response.isSuccessful){
-                    Log.d("retrofit", response.body()!!.response?.venue?.name!!)
-                }
-            }
-        })
+       // RetrofitClient.venueService.getVenueDetails().enqueue(object : RetrofitClient.VenueCallback<DetailsResponse> {
+       //     override fun onResponse(call: Call<DetailsResponse>, response: Response<DetailsResponse>) {
+       //         Log.d("retrofit", response.code().toString())
+       //         if(response.isSuccessful){
+       //             Log.d("retrofit", response.body()!!.response?.venue?.name!!)
+       //         }
+       //     }
+       // })
     }
 
     fun toMapFragment(){
