@@ -11,12 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btSwitchMap"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="6dp" />
 
     <Button
         android:id="@+id/btSwitchMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/switch_to_map"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/rounded_button"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
