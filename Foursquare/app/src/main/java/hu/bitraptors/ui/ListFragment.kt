@@ -52,7 +52,7 @@ class ListFragment : Fragment(), VenueAdapter.OnVenueClickedListener {
         recyclerView.adapter = venueAdapter
     }
 
-    override fun OnVenueSelected(venue: Venue) {
+    override fun onVenueClicked(venue: Venue) {
         Toast.makeText(mainActivity, venue.id, Toast.LENGTH_SHORT).show()
     }
 

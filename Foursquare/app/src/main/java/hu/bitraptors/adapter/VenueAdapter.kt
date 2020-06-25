@@ -14,7 +14,7 @@ class VenueAdapter : RecyclerView.Adapter<VenueAdapter.VenueHolder>(){
     var listener : OnVenueClickedListener? = null
 
     interface OnVenueClickedListener{
-        fun OnVenueSelected(venue : Venue)
+        fun onVenueClicked(venue : Venue)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VenueAdapter.VenueHolder {
@@ -43,7 +43,7 @@ class VenueAdapter : RecyclerView.Adapter<VenueAdapter.VenueHolder>(){
 
         init{
             venueView.setOnClickListener {
-                listener?.OnVenueSelected(venue!!)
+                listener?.onVenueClicked(venue!!)
             }
         }
     }
