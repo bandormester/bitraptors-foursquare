@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import hu.bitraptors.R
 import hu.bitraptors.model.details.DetailsResponse
@@ -36,6 +37,7 @@ import kotlin.math.abs
 class MainActivity : AppCompatActivity() {
 
     lateinit var nearVenues : List<Venue>
+    lateinit var myLocation : LatLng
     private val REQUEST_LOCATION = 100
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -60,6 +62,8 @@ class MainActivity : AppCompatActivity() {
             val location = locationResult.locations[0]
             Log.d("map","onLocationResult Callback")
             Log.d("map", "Lat: ${location.latitude}  Lon: ${location.longitude}")
+
+            myLocation = LatLng(location.latitude, location.longitude)
             getVenuesFromApi()
         }
     }
@@ -69,6 +73,8 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d("map","Legutobbi location")
                 Log.d("map","Lat: ${it.latitude}  Lon: ${it.longitude}")
+
+                myLocation = LatLng(it.latitude, it.longitude)
                 getVenuesFromApi()
             }
             .addOnFailureListener{
@@ -77,9 +83,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getVenuesFromApi(){
-        RetrofitClient.venueService.findVenues().enqueue(object : RetrofitClient.VenueCallback<SearchResponse> {
+        val location = "${myLocation.latitude},${myLocation.longitude}"
+
+        RetrofitClient.venueService.findVenues(ll = location).enqueue(object : RetrofitClient.VenueCallback<SearchResponse> {
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
-                Log.d("retrofit", response.code().toString())
+                super.onResponse(call, response)
                 if(response.isSuccessful){
                     nearVenues = response.body()!!.response!!.venues?: emptyList()
                     if(nearVenues.isEmpty()) Toast.makeText(this@MainActivity, "No near Venues found!", Toast.LENGTH_LONG).show()
@@ -164,5 +172,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.sliden_in_left, R.anim.slide_out_right)
             .replace(R.id.flFragment, ListFragment()).commit()
+    }
+
+    fun openVenueDetails(venueId : String){
+        val intent = Intent(this,DetailsActivity::class.java)
+        intent.putExtra("venueId", venueId)
+        startActivity(intent)
     }
 }

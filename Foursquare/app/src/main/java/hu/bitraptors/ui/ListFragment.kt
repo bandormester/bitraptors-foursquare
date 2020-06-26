@@ -54,6 +54,7 @@ class ListFragment : Fragment(), VenueAdapter.OnVenueClickedListener {
 
     override fun onVenueClicked(venue: Venue) {
         Toast.makeText(mainActivity, venue.id, Toast.LENGTH_SHORT).show()
+        mainActivity.openVenueDetails(venue.id!!)
     }
 
 }

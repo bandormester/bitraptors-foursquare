@@ -55,13 +55,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val budapest = LatLng(47.5, 19.0)    //TODO
+        val budapest = mainActivity.myLocation
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(budapest,16.0f))
 
         addVenueMarkers((activity as MainActivity).nearVenues)
 
-        mMap!!.setOnInfoWindowClickListener {
-            marker -> Toast.makeText(mainActivity, marker.tag.toString(), Toast.LENGTH_SHORT).show()
+        mMap!!.setOnInfoWindowClickListener { marker ->
+            Toast.makeText(mainActivity, marker.tag.toString(), Toast.LENGTH_SHORT).show()
+            mainActivity.openVenueDetails(marker.tag.toString())
             lastMarker = marker
         }
 
