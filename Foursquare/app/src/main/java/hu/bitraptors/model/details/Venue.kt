@@ -43,6 +43,8 @@ class Venue {
     var pageUpdates: PageUpdates? = null
     @SerializedName("photos")
     var photos: Photos? = null
+    @SerializedName("description")
+    var description: String? = null
     @SerializedName("popular")
     var popular: Popular? = null
     @SerializedName("reasons")

@@ -1,43 +1,27 @@
 package hu.bitraptors.ui
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.drawable.Animatable
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.view.animation.Interpolator
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import hu.bitraptors.R
-import hu.bitraptors.model.details.DetailsResponse
-import hu.bitraptors.model.search.SearchResponse
+import hu.bitraptors.data.DataService
 import hu.bitraptors.model.search.Venue
-import hu.bitraptors.retrofit.RetrofitClient
-import retrofit2.Call
-import retrofit2.Response
-import kotlin.math.abs
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DataService.VenueSearchCallback {
 
     lateinit var nearVenues : List<Venue>
     lateinit var myLocation : LatLng
+    lateinit var dataService: DataService
     private val REQUEST_LOCATION = 100
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -49,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = MyLocationCallback()
+
+        dataService = DataService()
 
         accessLocation()
     }
@@ -84,19 +70,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun getVenuesFromApi(){
         val location = "${myLocation.latitude},${myLocation.longitude}"
+        dataService.searchVenues(this, location)
 
-        RetrofitClient.venueService.findVenues(ll = location).enqueue(object : RetrofitClient.VenueCallback<SearchResponse> {
-            override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
-                super.onResponse(call, response)
-                if(response.isSuccessful){
-                    nearVenues = response.body()!!.response!!.venues?: emptyList()
-                    if(nearVenues.isEmpty()) Toast.makeText(this@MainActivity, "No near Venues found!", Toast.LENGTH_LONG).show()
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.flFragment, ListFragment()).commit()
-
-                }
-            }
-        })
+       // RetrofitClient.venueService.findVenues(ll = location).enqueue(object : RetrofitClient.VenueCallback<SearchResponse> {
+       //     override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
+       //         super.onResponse(call, response)
+       //         if(response.isSuccessful){
+       //             nearVenues = response.body()!!.response!!.venues?: emptyList()
+       //             if(nearVenues.isEmpty()) Toast.makeText(this@MainActivity, "No near Venues found!", Toast.LENGTH_LONG).show()
+       //             supportFragmentManager.beginTransaction()
+       //                 .replace(R.id.flFragment, ListFragment()).commit()
+       //
+       //         }
+       //     }
+       // })
     }
 
     private fun accessLocation(){
@@ -178,5 +165,12 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this,DetailsActivity::class.java)
         intent.putExtra("venueId", venueId)
         startActivity(intent)
+    }
+
+    override fun getSearchResult(result: List<Venue>) {
+        nearVenues = result
+        if(nearVenues.isEmpty()) Toast.makeText(this@MainActivity, "No near Venues found!", Toast.LENGTH_LONG).show()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, ListFragment()).commit()
     }
 }

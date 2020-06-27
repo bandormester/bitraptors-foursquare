@@ -4,4 +4,9 @@
     <string name="to_map">To Map</string>
     <string name="switch_to_map">Switch to Map</string>
     <string name="switch_to_list">Switch to List</string>
+    <string name="details_category">Category: %1$s</string>
+    <string name="no_category">Category not provided</string>
+    <string name="no_website">No website added</string>
+    <string name="no_description">No description added</string>
+    <string name="no_address">No address provided</string>
 </resources>
