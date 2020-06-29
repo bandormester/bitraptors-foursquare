@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import hu.bitraptors.R
 import hu.bitraptors.adapter.ImageAdapter
-import hu.bitraptors.data.DataService
+import hu.bitraptors.service.DataService
 import hu.bitraptors.model.details.Venue
 import kotlinx.android.synthetic.main.activity_details.*
 

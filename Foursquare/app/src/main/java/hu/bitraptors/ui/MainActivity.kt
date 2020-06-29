@@ -8,14 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import hu.bitraptors.R
-import hu.bitraptors.data.DataService
+import hu.bitraptors.service.DataService
 import hu.bitraptors.model.search.Venue
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), DataService.VenueSearchCallback {
 
@@ -33,7 +35,6 @@ class MainActivity : AppCompatActivity(), DataService.VenueSearchCallback {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = MyLocationCallback()
-
         dataService = DataService()
 
         accessLocation()
@@ -170,6 +171,7 @@ class MainActivity : AppCompatActivity(), DataService.VenueSearchCallback {
     override fun getSearchResult(result: List<Venue>) {
         nearVenues = result
         if(nearVenues.isEmpty()) Toast.makeText(this@MainActivity, "No near Venues found!", Toast.LENGTH_LONG).show()
+        ivSplash.visibility = View.GONE
         supportFragmentManager.beginTransaction()
             .replace(R.id.flFragment, ListFragment()).commit()
     }

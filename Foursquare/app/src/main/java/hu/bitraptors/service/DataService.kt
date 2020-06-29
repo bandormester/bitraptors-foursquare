@@ -1,4 +1,4 @@
-package hu.bitraptors.data
+package hu.bitraptors.service
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
