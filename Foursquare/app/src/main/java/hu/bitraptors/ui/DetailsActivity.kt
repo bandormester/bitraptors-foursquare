@@ -8,7 +8,6 @@ import android.widget.Toast
 import hu.bitraptors.R
 import hu.bitraptors.adapter.ImageAdapter
 import hu.bitraptors.data.DataService
-import hu.bitraptors.model.details.Photo
 import hu.bitraptors.model.details.Venue
 import kotlinx.android.synthetic.main.activity_details.*
 
@@ -31,10 +30,9 @@ class DetailsActivity : AppCompatActivity(), DataService.VenueDetailsCallback {
         }
 
 
-        dataService.getImages(this)
-        val imageAdapter = ImageAdapter(this)
-        imageAdapter.addImages(arrayOf())
-        viewPager.adapter = imageAdapter
+
+
+
     }
 
     private fun getVenueFromApi(venueId: String){
@@ -71,12 +69,18 @@ class DetailsActivity : AppCompatActivity(), DataService.VenueDetailsCallback {
     override fun getDetailsResult(result: Venue) {
         venue = result
         setupView()
+
+        venue.photos?.let {
+            dataService.getImages(this, it)
+        }
+
     }
 
-    override fun getDetailsImages(result: Array<Bitmap>) {
+    override fun getDetailsImages(result: MutableList<Bitmap>) {
         runOnUiThread {
+            val array = result.toTypedArray()
             val imageAdapter = ImageAdapter(this)
-            imageAdapter.addImages(result)
+            imageAdapter.addImages(array)
             viewPager.adapter = imageAdapter
             Log.d("okhttp", "lefutott")
         }

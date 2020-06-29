@@ -29,7 +29,7 @@ class ImageAdapter(private val context: Context) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(context)
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        imageView.scaleType = ImageView.ScaleType.FIT_XY
         imageView.setImageBitmap(images[position])
         (container as ViewPager).addView(imageView,0)
         return imageView
