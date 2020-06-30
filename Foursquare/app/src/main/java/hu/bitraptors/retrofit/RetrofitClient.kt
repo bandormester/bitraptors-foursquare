@@ -8,8 +8,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    val ClientId = "UMXDQEHAZ3X2EHEJGUNUBO5JT5ADO5I3YJSZHJMOKGALLBXJ"
-    val ClientSecret = "AFNHCFBVDC0SL4R43OONWAS4C1XOFNPPRLQEAB105NYYZ1WK"
+    const val ClientId = "UMXDQEHAZ3X2EHEJGUNUBO5JT5ADO5I3YJSZHJMOKGALLBXJ"
+    const val ClientSecret = "AFNHCFBVDC0SL4R43OONWAS4C1XOFNPPRLQEAB105NYYZ1WK"
 
     val venueService : FoursquareApi = Retrofit.Builder()
         .baseUrl("https://api.foursquare.com/v2/venues/")

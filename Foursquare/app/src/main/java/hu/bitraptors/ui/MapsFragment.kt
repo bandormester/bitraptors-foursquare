@@ -43,9 +43,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-
-        //TODO
-
         btSwitchList.setOnClickListener {
             mainActivity.toListFragment()
         }
@@ -55,8 +52,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val budapest = mainActivity.myLocation
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(budapest,16.0f))
+        mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(mainActivity.myLocation,16.0f))
 
         addVenueMarkers((activity as MainActivity).nearVenues)
 
@@ -84,6 +80,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    //A gomb miatt nem latszodik a maptoolbar, ha markerre klikkelunk
     private fun hideButton(){
         if(btSwitchList.isFocusable){
             val fade = AlphaAnimation(1.0f, 0.5f)

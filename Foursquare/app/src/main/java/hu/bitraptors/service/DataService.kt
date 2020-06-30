@@ -20,15 +20,13 @@ class DataService {
     private lateinit var searchListener : VenueSearchCallback
     private lateinit var detailsListener : VenueDetailsCallback
     private lateinit var okClient: OkHttpClient
-    private lateinit var okRequest: Request
     private var pictures: MutableList<Bitmap> = mutableListOf()
-    private var pictureCount: Int = 0
 
-    public interface VenueSearchCallback{
+    interface VenueSearchCallback{
         fun getSearchResult(result : List<Venue>)
     }
 
-    public interface VenueDetailsCallback{
+    interface VenueDetailsCallback{
         fun getDetailsResult(result : hu.bitraptors.model.details.Venue)
         fun getDetailsImages(result: MutableList<Bitmap>)
     }
@@ -41,7 +39,6 @@ class DataService {
                 super.onResponse(call, response)
                 if(response.isSuccessful){
                     val venue = response.body()!!.response!!.venue!!
-                    Log.d("retrofit",venue.name)
                     detailsListener.getDetailsResult(venue)
                 }
             }
@@ -58,6 +55,7 @@ class DataService {
             val item = photos.groups!![0].items!![0]
             Request.Builder().url(item.prefix+"300x300"+item.suffix).build()
         } else{
+            //Ha nincs kép egy placeholder képet tölt le
             Request.Builder().url("https://lh3.googleusercontent.com/81tvpT59weJbOGWT9jQ8_9RtcGXKCcVv59BU7Wl6PnS7okIgrS4iTCgwWpPQY2FRKw").build()
         }
             detailsListener = listener
@@ -71,58 +69,13 @@ class DataService {
                 override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                     val inputStream = response.body()?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
-                    Log.d("okhttp","valasz")
-                    Log.d("okhttp", "pic count "+pictureCount.toString())
-                    Log.d("okhttp", "pic size "+pictures.size.toString())
+
+                    //Hogy lehessen a kepek kozott scrollolni
+                    pictures.add(bitmap)
                     pictures.add(bitmap)
                     detailsListener.getDetailsImages(pictures)
                 }
             })
-
-
-        //for(group in photos.groups!!){
-        //    Log.d("okhttp","group for")
-        //    Log.d("okhttp",photos.groups!!.size.toString())
-        //    for(item in group.items!!){
-        //        Log.d("okhttp",group.items!!.size.toString())
-        //        Log.d("okhttp","item for")
-        //        val myRequest = Request.Builder().url(item.prefix+"300x300"+item.suffix).build()
-//
-        //        okClient.newCall(myRequest).enqueue(object : Callback {
-        //            override fun onFailure(call: okhttp3.Call, e: IOException) {
-        //                Log.d("okhttp",e.message?:"")
-        //            }
-//
-        //            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-        //                val inputStream = response.body()?.byteStream()
-        //                val bitmap = BitmapFactory.decodeStream(inputStream)
-        //                Log.d("okhttp","valasz")
-        //                Log.d("okhttp", "pic count "+pictureCount.toString())
-        //                Log.d("okhttp", "pic size "+pictures.size.toString())
-        //                pictures.add(bitmap)
-        //                if(pictures.size == pictureCount)
-        //                detailsListener.getDetailsImages(pictures)
-        //            }
-        //        })
-//
-        //    }
-        //}
-
-
-
-      // okRequest = Request.Builder().url("https://igx.4sqi.net/img/general/300x300/5163668_xXFcZo7sU8aa1ZMhiQ2kIP7NllD48m7qsSwr1mJnFj4.jpg").build()
-
-      // okClient.newCall(okRequest).enqueue(object : Callback {
-      //     override fun onFailure(call: okhttp3.Call, e: IOException) {
-      //         Log.d("okhttp",e.message?:"")
-      //     }
-
-      //     override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-      //         val inputStream = response.body()?.byteStream()
-      //         val bitmap = BitmapFactory.decodeStream(inputStream)
-      //         detailsListener.getDetailsImages(arrayOf(bitmap))
-      //     }
-      // })
     }
 
     fun searchVenues(listener: VenueSearchCallback, location: String){

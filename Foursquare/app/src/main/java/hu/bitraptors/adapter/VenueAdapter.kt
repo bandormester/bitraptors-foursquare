@@ -3,6 +3,7 @@ package hu.bitraptors.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import hu.bitraptors.R
 import hu.bitraptors.model.search.Venue
@@ -39,7 +40,7 @@ class VenueAdapter : RecyclerView.Adapter<VenueAdapter.VenueHolder>(){
 
     inner class VenueHolder(venueView : View) : RecyclerView.ViewHolder(venueView){
         var venue : Venue? = null
-        var tvRowName = venueView.tvRowName
+        var tvRowName: TextView = venueView.tvRowName
 
         init{
             venueView.setOnClickListener {

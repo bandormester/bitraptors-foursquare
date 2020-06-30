@@ -43,10 +43,10 @@ class ListFragment : Fragment(), VenueAdapter.OnVenueClickedListener {
 
     override fun onStart() {
         super.onStart()
-        setupRecyclerView(mainActivity.nearVenues)
+        setupRecyclerView()
     }
 
-    private fun setupRecyclerView(nearVenues : List<Venue>){
+    private fun setupRecyclerView(){
         venueAdapter.addVenues(mainActivity.nearVenues)
         venueAdapter.listener = this
         recyclerView.adapter = venueAdapter

@@ -23,16 +23,12 @@ class DetailsActivity : AppCompatActivity(), DataService.VenueDetailsCallback {
         dataService = DataService()
 
         val venueId = intent.getStringExtra("venueId")
+
         if(venueId!=null){
             getVenueFromApi(venueId)
         }else{
             Toast.makeText(this, "Venue ID not found", Toast.LENGTH_LONG).show()
         }
-
-
-
-
-
     }
 
     private fun getVenueFromApi(venueId: String){
@@ -62,8 +58,6 @@ class DetailsActivity : AppCompatActivity(), DataService.VenueDetailsCallback {
         if(venue.description != null){
             tvDescription.text = venue.description
         }else tvDescription.text = getString(R.string.no_description)
-
-
     }
 
     override fun getDetailsResult(result: Venue) {
@@ -73,7 +67,6 @@ class DetailsActivity : AppCompatActivity(), DataService.VenueDetailsCallback {
         venue.photos?.let {
             dataService.getImages(this, it)
         }
-
     }
 
     override fun getDetailsImages(result: MutableList<Bitmap>) {
@@ -82,7 +75,6 @@ class DetailsActivity : AppCompatActivity(), DataService.VenueDetailsCallback {
             val imageAdapter = ImageAdapter(this)
             imageAdapter.addImages(array)
             viewPager.adapter = imageAdapter
-            Log.d("okhttp", "lefutott")
         }
     }
 }

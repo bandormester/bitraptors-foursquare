@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity(), DataService.VenueSearchCallback {
                 return
             }
             val location = locationResult.locations[0]
-            Log.d("map","onLocationResult Callback")
             Log.d("map", "Lat: ${location.latitude}  Lon: ${location.longitude}")
 
             myLocation = LatLng(location.latitude, location.longitude)
@@ -58,9 +57,7 @@ class MainActivity : AppCompatActivity(), DataService.VenueSearchCallback {
     fun getLastLocation(){
         fusedLocationClient.lastLocation
             .addOnSuccessListener {
-                Log.d("map","Legutobbi location")
                 Log.d("map","Lat: ${it.latitude}  Lon: ${it.longitude}")
-
                 myLocation = LatLng(it.latitude, it.longitude)
                 getVenuesFromApi()
             }
@@ -72,19 +69,6 @@ class MainActivity : AppCompatActivity(), DataService.VenueSearchCallback {
     private fun getVenuesFromApi(){
         val location = "${myLocation.latitude},${myLocation.longitude}"
         dataService.searchVenues(this, location)
-
-       // RetrofitClient.venueService.findVenues(ll = location).enqueue(object : RetrofitClient.VenueCallback<SearchResponse> {
-       //     override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
-       //         super.onResponse(call, response)
-       //         if(response.isSuccessful){
-       //             nearVenues = response.body()!!.response!!.venues?: emptyList()
-       //             if(nearVenues.isEmpty()) Toast.makeText(this@MainActivity, "No near Venues found!", Toast.LENGTH_LONG).show()
-       //             supportFragmentManager.beginTransaction()
-       //                 .replace(R.id.flFragment, ListFragment()).commit()
-       //
-       //         }
-       //     }
-       // })
     }
 
     private fun accessLocation(){
